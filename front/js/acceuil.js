@@ -14,14 +14,31 @@ const fetchCanaps = async () => {
 const displayCanaps = async () => {
     await fetchCanaps();
     document.getElementById("items").innerHTML = lesCanaps.map((products) => `
-    <a href = "${products._id}">
-        <article>
-            <img src="${products.imageUrl}" alt="${products.altTxt}">
+    <a href="./product.html" id="${products._id}"> 
+        <article id="${products._id}" class="article">
+            <img src="${products.imageUrl}" alt="${products.altTxt}" >
             <h3 class="productName">"${products.name}"</h3>
             <p class="productDescription">"${products.description}"</p>
         </article>
     </a>
     `)
+    .join("");
+
+   
+    var buttons = document.querySelectorAll('a');
+
+    for (var i=0; i<buttons.length; ++i) {
+      buttons[i].addEventListener('click', clickFunc);
+    }
+    
+    function clickFunc() {
+        document.getElementById(this.id).href += `?id=${this.id}`;
+    } 
+    
 };
 
 displayCanaps();
+
+
+
+
