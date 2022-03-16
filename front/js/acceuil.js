@@ -1,7 +1,7 @@
 /* Creation d'un tableau vide */
 let lesCanaps = [];
 
-/* Recuperation de la liste des produits  dans l'API et les ajoute au tableau lesCanaps */
+/* Recuperation de la liste des produits dans l'API et les ajoute au tableau lesCanaps */
 const fetchCanaps = async () => {
     await fetch("http://localhost:3000/api/products/")
         .then((res) => res.json())
@@ -10,6 +10,7 @@ const fetchCanaps = async () => {
             console.log(lesCanaps);
         });
 };
+
 /* affiche les différents produits dans le DOM */ 
 const displayCanaps = async () => {
     await fetchCanaps();
@@ -22,19 +23,20 @@ const displayCanaps = async () => {
         </article>
     </a>
     `)
+/* retire la virgule entre chaques produits a l'affichage */
     .join("");
 
-   
+/* ajoute un addEventListener click sur chaques produits (a), */
     var buttons = document.querySelectorAll('a');
 
     for (var i=0; i<buttons.length; ++i) {
       buttons[i].addEventListener('click', clickFunc);
     }
-    
+
+/* recupere l'id du produit cliqué et le passe en parametre au href */
     function clickFunc() {
         document.getElementById(this.id).href += `?id=${this.id}`;
     } 
-    
 };
 
 displayCanaps();

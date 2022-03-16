@@ -1,11 +1,12 @@
+/* recuperation du parametre id dans l'url */
 function getProductId() {
 	return new URL(location.href).searchParams.get("id");
 }
 const productId = getProductId();
 console.log(productId);
 
+/* recuperation du produit dans l'API par son id et ajoute ses informations dans theProduct */
 var theProduct = [];
-
 const fetchProduct = async () => {
 	await fetch(`http://localhost:3000/api/products/${productId}`)
 		.then((res) => res.json())
@@ -15,11 +16,12 @@ const fetchProduct = async () => {
 		});
 };
 
+/* affiche les caracteristiques du produit dans le DOM */
 const displayProduct = async () => {
     await fetchProduct();
 	theProduct.colors.forEach(element => console.log(element))
 	
-    document.getElementById("item_card").innerHTML =  `
+  document.getElementById("item_card").innerHTML =  `
     <article>
              <div class="item__img">
                <img src="${theProduct.imageUrl}" alt="${theProduct.altTxt}"> 
@@ -40,9 +42,7 @@ const displayProduct = async () => {
                 <div class="item__content__settings__color">
                   <label for="color-select">Choisir une couleur :</label>
                   <select name="color-select" id="colors">
-                    <option value="">--SVP, choisissez une couleur --</option>
-                    <option value=""></option>
-                    
+                    <option value="">--SVP, choisissez une couleur --</option>                    
                   </select>
                 </div>
 
@@ -58,12 +58,22 @@ const displayProduct = async () => {
 
             </div>
            
-          </article>
-
-
-	
+    </article>
     `
 
+  /* recuperation des couleurs possibles du produit et creer un element option pour chaque couleur dans le DOM */
+  let colorSelect = document.getElementById("colors");
+  console.log(colorSelect);
+
+  theProduct.colors.forEach((eachColors) => {
+    
+    let tagOption = document.createElement("option"); 
+    tagOption.innerHTML = `${eachColors}`;
+    tagOption.value = `${eachColors}`;
+    
+    colorSelect.appendChild(tagOption);
+
+  });
 
 };
 displayProduct();
