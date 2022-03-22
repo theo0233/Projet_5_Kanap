@@ -53,7 +53,7 @@ const displayProduct = async () => {
               </div>
 
               <div class="item__content__addButton">
-                <button id="addToCart">Ajouter au panier</button>
+                <button id="${theProduct._id}">Ajouter au panier</button>
               </div>
 
             </div>
@@ -74,6 +74,32 @@ const displayProduct = async () => {
     colorSelect.appendChild(tagOption);
 
   });
-
+addProductToStorage(theProduct);
 };
+
 displayProduct();
+
+
+const addProductToStorage = () => {
+    let bouton = document.getElementById(theProduct._id);
+    console.log(bouton);
+    bouton.addEventListener("click", () => {
+      let productTable = JSON.parse(localStorage.getItem("product"));
+      let select = document.getElementById("colors");
+      console.log(select.value);
+      console.log(productTable);
+
+    const addColorToProduct = Object.assign({}, theProduct, {
+      color : `${select.value}` 
+    })
+    console.log(addColorToProduct);
+    if(productTable == null) {
+      productTable = []
+      productTable.push(addColorToProduct);
+      console.log(productTable);
+      localStorage.setItem("product", JSON.stringify(productTable));
+    }
+    ;
+      
+    } )
+}
