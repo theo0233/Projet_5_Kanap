@@ -78,28 +78,29 @@ addProductToStorage(theProduct);
 };
 
 displayProduct();
-
+ 
 
 const addProductToStorage = () => {
     let bouton = document.getElementById(theProduct._id);
     console.log(bouton);
     bouton.addEventListener("click", () => {
       let productTable = JSON.parse(localStorage.getItem("product"));
-      let select = document.getElementById("colors");
-      console.log(select.value);
+      let colorSelection = document.getElementById("colors");
+      let itemQuantity = document.getElementById("quantity");
+      
       console.log(productTable);
 
-    const addColorToProduct = Object.assign({}, theProduct, {
-      color : `${select.value}` 
+    const addColorAndQuantity = Object.assign({}, theProduct, {
+      color : `${colorSelection.value}`,
+      quantity : `${itemQuantity.value}` 
     })
-    console.log(addColorToProduct);
+    
     if(productTable == null) {
       productTable = []
-      productTable.push(addColorToProduct);
+      productTable.push(addColorAndQuantity);
       console.log(productTable);
       localStorage.setItem("product", JSON.stringify(productTable));
-    }
-    ;
+    };
       
-    } )
+  } )
 }
