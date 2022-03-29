@@ -9,7 +9,7 @@ if (productFromStorage) {
     console.log(productFromStorage);
     cart__items.innerHTML = productFromStorage.map(
         (product) => `
-    <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
+    <article class="cart__item" data-id="${product._id}" data-color="${product.color}">
     <div class="cart__item__img">
       <img src="${product.imageUrl}" alt="Photographie d'un canapé">
     </div>
@@ -25,16 +25,19 @@ if (productFromStorage) {
           <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantity}">
         </div>
         <div class="cart__item__content__settings__delete">
-          <p class="deleteItem">Supprimer</p>
+          <p class="deleteItem" data-id="${product._id} data-color="${product.color}>Supprimer</p>
         </div>
       </div>
     </div>
   </article> -->
 </section>
 <div class="cart__price">
-  <p>Total (<span id="totalQuantity"><!-- 2 --></span> articles) : <span id="totalPrice"><!-- 84,00 --></span> €</p>
+  <p>Total (<span id="totalQuantity"><!-- 2 --></span> articles) : <span id="totalPrice"> "${product.quantity * product.price} "</span> €</p>
 </div>
         `
-    )};
+  )}
+else {
+  alert("votre panier est vide");
+};
 };
 cartDisplay();
