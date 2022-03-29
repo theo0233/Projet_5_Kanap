@@ -85,27 +85,30 @@ const addProductToStorage = () => {
     console.log(bouton);
     bouton.addEventListener("click", () => {
       let productTable = JSON.parse(localStorage.getItem("product"));
-      let colorSelection = document.getElementById("colors");
-      let itemQuantity = document.getElementById("quantity");
+      let colorSelection = document.getElementById("colors").value;
+      let itemQuantity = parseInt(document.getElementById("quantity").value); 
+      console.log(itemQuantity)
       
 
     const addColorAndQuantity = Object.assign({}, theProduct, {
-      color : `${colorSelection.value}`,
-      quantity : `${itemQuantity.value}` 
+      color : colorSelection,
+      quantity : itemQuantity
     })
     
     if(productTable == null) {
+      console.log("productTable = null")
       productTable = []
       productTable.push(addColorAndQuantity);
       console.log(productTable);
       localStorage.setItem("product", JSON.stringify(productTable));
     }
     else if(productTable != null) {
+      console.log("productTable != null",productTable)
       for (i=0; i < productTable.length; i++) {
-        if(productTable[i]._id == theProduct._id && productTable[i].color == colorSelection.value) {
+        if(productTable[i]._id == theProduct._id && productTable[i].color == colorSelection) {
+          console.log("meme produit")
           return(
-            productTable[i].quantity++,
-            console.log("quantity++"),
+            productTable[i].quantity += itemQuantity,
             localStorage.setItem("product", JSON.stringify(productTable)),
             (productTable = JSON.parse(localStorage.getItem("product")))
           );

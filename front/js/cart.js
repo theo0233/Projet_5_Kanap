@@ -3,6 +3,7 @@ let productFromStorage = JSON.parse(localStorage.getItem("product"));
 console.log(productFromStorage);
 
 const cartDisplay = async () => {
+  
 if (productFromStorage) {
     await productFromStorage;
     
@@ -25,7 +26,7 @@ if (productFromStorage) {
           <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantity}">
         </div>
         <div class="cart__item__content__settings__delete">
-          <p class="deleteItem" data-id="${product._id} data-color="${product.color}>Supprimer</p>
+          <p class="deleteItem" data-id="${product._id} data-color="${product.color} >Supprimer</p>
         </div>
       </div>
     </div>
@@ -36,6 +37,7 @@ if (productFromStorage) {
 </div>
         `
   )}
+  
 else {
   alert("votre panier est vide");
 };
