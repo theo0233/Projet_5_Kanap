@@ -104,16 +104,29 @@ const addProductToStorage = () => {
     }
     else if(productTable != null) {
       console.log("productTable != null",productTable)
+       /* condition meme produit,meme couleur */
       for (i=0; i < productTable.length; i++) {
         if(productTable[i]._id == theProduct._id && productTable[i].color == colorSelection) {
-          console.log("meme produit")
+          console.log("meme produit,meme couleur")
           return(
             productTable[i].quantity += itemQuantity,
             localStorage.setItem("product", JSON.stringify(productTable)),
-            (productTable = JSON.parse(localStorage.getItem("product")))
+            productTable = JSON.parse(localStorage.getItem("product"))
           );
         }
       }
+      /* condition couleur differente ou produit different */
+      for (i=0; i < productTable.length; i++) {
+        if(
+          (productTable[i]._id == theProduct._id && productTable[i].color != colorSelection) || (productTable[i]._id != theProduct._id)
+          ) { 
+            return (console.log("couleur ou produit différent"),
+            productTable.push(addColorAndQuantity),
+            localStorage.setItem('product',JSON.stringify(productTable)),
+            productTable = JSON.parse(localStorage.getItem('product'))
+            );
+          }
+        }
     } 
   });
   return (productTable = JSON.parse(localStorage.getItem("product")));
