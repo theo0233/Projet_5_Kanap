@@ -42,5 +42,20 @@ const displayCanaps = async () => {
 displayCanaps();
 
 
+/* notification quantité produit panier */ 
+
+let productLocalStorage = JSON.parse(localStorage.getItem("product"))
+let totalProducts = [];
+
+if (productLocalStorage) {
+    productLocalStorage.forEach((canap) => {
+        totalProducts.push(canap.quantity);
+        console.log(totalProducts);
+        
+    });
+    quantityOfProducts.textContent = "(" + `${eval(totalProducts.join("+"))}` + ")";
+
+}
+
 
 
