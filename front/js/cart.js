@@ -45,16 +45,11 @@ const quantityModification = async (cartDisplay) => {
   await cartDisplay;
  
     document.querySelectorAll('input').forEach(product => {
-      /*$(document).on("click", ".card", function (){*/
-       product.addEventListener('click', event => { 
-        
-        product.addEventListener("change", (e) => {
+          product.addEventListener("change", (e) => {
           let itemToChange = e.target.dataset.id;
           let colorOf = e.target.dataset.color;
           let newQuantity = e.target.value;
           console.log(itemToChange,colorOf,newQuantity);
         });
-      })
-    })
-
+      });
 };
