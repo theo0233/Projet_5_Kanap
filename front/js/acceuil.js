@@ -26,7 +26,7 @@ const displayCanaps = async () => {
 /* retire la virgule entre chaques produits a l'affichage */
     .join("");
 
-/* ajoute un addEventListener click sur chaques produits (a), */
+/* ajoute un EventListener "click" sur chaques produits (a), */
     var buttons = document.querySelectorAll('a');
 
     for (var i=0; i<buttons.length; ++i) {

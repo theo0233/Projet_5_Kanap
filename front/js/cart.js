@@ -1,3 +1,4 @@
+let comparingProduct = [];
 let productFromStorage = JSON.parse(localStorage.getItem("product"));
 
 console.log(productFromStorage);
@@ -25,8 +26,7 @@ const cartDisplay = async () => {
           <input type="number" id="${product._id}" data-id="${product._id}" data-color="${product.color}" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantity}">
         </div>
         <div class="cart__item__content__settings__delete">
-          <p class="deleteItem" data-id="${product._id} data-color="${product.color} >Supprimer</p>
-          <p id="log"></p>
+        <p class="deleteItem" data-id="${product._id}" data-color="${product.color}">Supprimer</p>
         </div>
       </div>
     </div>
@@ -34,6 +34,7 @@ const cartDisplay = async () => {
 </section> `
     );
     quantityModification();
+    deleteProduct();
   } else {
     alert("votre panier est vide");
   }
@@ -43,13 +44,55 @@ cartDisplay();
 
 const quantityModification = async (cartDisplay) => {
   await cartDisplay;
- 
     document.querySelectorAll('input').forEach(product => {
           product.addEventListener("change", (e) => {
-          let itemToChange = e.target.dataset.id;
-          let colorOf = e.target.dataset.color;
-          let newQuantity = e.target.value;
-          console.log(itemToChange,colorOf,newQuantity);
-        });
-      });
+            let itemToChange = e.target.dataset.id;
+            let colorSelection = e.target.dataset.color;
+            let newQuantity = e.target.value;
+            console.log(itemToChange,colorSelection,newQuantity);
+            for (i=0; i < productFromStorage.length; i++) {
+              if(productFromStorage[i]._id == itemToChange && productFromStorage[i].color == colorSelection) {
+                console.log("maj quantite")
+                return(
+                  productFromStorage[i].quantity = newQuantity,
+                  localStorage.setItem("product", JSON.stringify(productFromStorage),
+                  productFromStorage = JSON.parse(localStorage.getItem("product")))
+                );
+              }
+            }
+          });
+    });
 };
+
+const deleteProduct = async (cartDisplay) => {
+  await cartDisplay;
+  console.log('testDELETE')
+  let supprimer = document.querySelectorAll('.deleteItem')
+  console.log(supprimer);
+    supprimer.forEach((productToDelete) => {
+    productToDelete.addEventListener("click", () => {
+    console.log(productToDelete);
+
+    let allProductOnStorage = productFromStorage.length;
+    console.log(allProductOnStorage)
+
+    if(allProductOnStorage == 1){
+      return (localStorage.removeItem("product")
+      );
+    } 
+    else { 
+      comparingProduct = productFromStorage.filter(element => {
+      
+      if(supprimer.dataset.id != element._id || supprimer.dataset.color != element.color) {
+        return true
+      }
+    });
+    
+
+    }
+    
+  });
+  });
+};
+
+      
