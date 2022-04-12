@@ -68,6 +68,7 @@ const deleteProduct = async (cartDisplay) => {
   await cartDisplay;
   console.log('testDELETE')
   let supprimer = document.querySelectorAll('.deleteItem')
+  
   console.log(supprimer);
     supprimer.forEach((productToDelete) => {
     productToDelete.addEventListener("click", () => {
@@ -75,6 +76,7 @@ const deleteProduct = async (cartDisplay) => {
 
     let allProductOnStorage = productFromStorage.length;
     console.log(allProductOnStorage)
+    
 
     if(allProductOnStorage == 1){
       return (localStorage.removeItem("product")
@@ -82,17 +84,24 @@ const deleteProduct = async (cartDisplay) => {
     } 
     else { 
       comparingProduct = productFromStorage.filter(element => {
+        
       
-      if(supprimer.dataset.id != element._id || supprimer.dataset.color != element.color) {
+      if( productToDelete.dataset.id != element._id || productToDelete.dataset.color != element.color) {
         return true
+        
       }
+      
     });
+    console.log(comparingProduct);
+    localStorage.setItem("product",JSON.stringify(comparingProduct));
+    
     
 
     }
     
   });
   });
+  return;
 };
 
       
