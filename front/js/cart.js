@@ -1,15 +1,24 @@
 let comparingProduct = [];
 let productFromStorage = JSON.parse(localStorage.getItem("product"));
+/* Creation d'un tableau vide */
+let lesCanaps = [];
+
 
 console.log(productFromStorage);
 
+
 const cartDisplay = async () => {
+
   if (productFromStorage) {
     await productFromStorage;
 
+    
+    
     console.log(productFromStorage);
     cart__items.innerHTML = productFromStorage.map(
-      (product) => `
+      (product) =>  
+      
+       `
     <article class="cart__item" data-id="${product._id}" data-color="${product.color}">
     <div class="cart__item__img">
       <img src="${product.imageUrl}" alt="Photographie d'un canapé">
@@ -18,7 +27,7 @@ const cartDisplay = async () => {
       <div class="cart__item__content__description">
         <h2>${product.name}</h2>
         <p>${product.color}</p>
-        <p>${product.price} € </p>
+        <p>"${product.price}  " € </p>
       </div>
       <div class="cart__item__content__settings">
         <div class="cart__item__content__settings__quantity">
@@ -30,11 +39,14 @@ const cartDisplay = async () => {
         </div>
       </div>
     </div>
-  </article> -->
+    
+  </article> 
 </section> `
-    );
+    )
+    .join("");
     quantityModification();
     deleteProduct();
+    totalPrice();
   } else {
     alert("votre panier est vide");
   }
@@ -84,9 +96,7 @@ const deleteProduct = async (cartDisplay) => {
     } 
     else { 
       comparingProduct = productFromStorage.filter(element => {
-        
-      
-      if( productToDelete.dataset.id != element._id || productToDelete.dataset.color != element.color) {
+        if( productToDelete.dataset.id != element._id || productToDelete.dataset.color != element.color) {
         return true
         
       }
@@ -94,14 +104,36 @@ const deleteProduct = async (cartDisplay) => {
     });
     console.log(comparingProduct);
     localStorage.setItem("product",JSON.stringify(comparingProduct));
-    
-    
-
     }
-    
   });
   });
   return;
+};
+
+const totalPrice = async (cartDisplay,quantityModification,deleteProduct) => {
+  await cartDisplay;
+  await quantityModification;
+  await deleteProduct;
+  console.log("calcul total");
+
+  let unitPrice = [];
+  let totalProductQuantity = [];
+  let table = JSON.parse(localStorage.getItem("product"));
+  let displayQuantity = document.querySelectorAll(".itemQuantity");
+  console.log(displayQuantity);
+
+  table.forEach((product) => {
+    unitPrice.push(
+      product.price * product.quantity,
+    );
+    totalProductQuantity.push(product.quantity);
+  });
+  console.log(totalProductQuantity);
+  console.log(unitPrice);
+
+  totalQuantity.textContent = `${eval(unitPrice.join("+"))}`;
+  
+
 };
 
       

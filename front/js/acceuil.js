@@ -11,6 +11,7 @@ const fetchCanaps = async () => {
         });
 };
 
+
 /* affiche les différents produits dans le DOM */ 
 const displayCanaps = async () => {
     await fetchCanaps();
