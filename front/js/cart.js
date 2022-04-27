@@ -1,25 +1,23 @@
+
+
+
+/*  A modifié  !!!!! attention le rajout de quantité est a revoir : quand on rajoute un produit deja existant la quantité voulu 
+se met a la suite de la chaine de caractere : exemple si il y en a 2 qu'on en rajoute 10 le resultat sera 210 !!! */
+
+
+
 let comparingProduct = [];
 let productFromStorage = JSON.parse(localStorage.getItem("product"));
-/* Creation d'un tableau vide */
-let lesCanaps = [];
-const fetchCanaps = async () => {
-  await fetch("http://localhost:3000/api/products/")
-      .then((res) => res.json())
-      .then((promise) => {
-          lesCanaps = promise;
-          console.log(lesCanaps);
-      });
-};
 
-console.log(lesCanaps);
 
-console.log(productFromStorage);
+
+
 
 
 const cartDisplay = async () => {
 
   if (productFromStorage) {
-    await fetchCanaps();
+    
     await productFromStorage;
 
     
@@ -37,7 +35,7 @@ const cartDisplay = async () => {
       <div class="cart__item__content__description">
         <h2>${product.name}</h2>
         <p>${product.color}</p>
-        <p>"${product.price}  " € </p>
+       <p>"${product.price}  " € </p> 
       </div>
       <div class="cart__item__content__settings">
         <div class="cart__item__content__settings__quantity">
@@ -54,6 +52,8 @@ const cartDisplay = async () => {
 </section> `
     )
     .join("");
+
+
     quantityModification();
     deleteProduct();
     totalPrice();
@@ -146,6 +146,8 @@ const totalPrice = async (cartDisplay,quantityModification,deleteProduct) => {
 
 };
 
+
+
 // formulaire regular expression
 function formRecovery() {
     
@@ -170,6 +172,7 @@ function formRecovery() {
     form.email.addEventListener('change', function() {
         validEmail(this);
     });
+    
 
     //validation des inputs 
     const validFirstName = function(inputFirstName) {
@@ -217,8 +220,77 @@ function formRecovery() {
             emailErrorMsg.innerHTML = 'Veuillez renseigner votre email.';
         }
     };
-    }
-  formRecovery();
+  }
+    
+    formRecovery();
+    
+    
+   /* bouton commander */
+   
+    const commandButton = document.getElementById('order');
+     
+    
+      commandButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log("click confirmation")
+    
+        if (!productFromStorage) {
+          alert(
+            "Panier vide, veuillez sélectionner un ou plusieurs articles pour passer commande"
+          );
+        }
+        let productId = [];
+          for (let i = 0; i < productFromStorage.length; i++) {
+            productId.push(productFromStorage[i]._id);
+          }
+          console.log(productId)
+    
+        /* objet contact avec les infos du formulaire et insertion du tableau de produits */
+          let commandOrder = {
+            contact: {
+              firstName: firstName.value,
+              lastName: lastName.value,
+              address: address.value,
+              city: city.value,
+              email: email.value,
+            },
+            products: productId,
+          };
+
+          console.log(commandOrder);
+          /* option de la method post fetch */
+          const postOptions = {
+            method: 'POST',
+            body: JSON.stringify(commandOrder),
+            headers: {
+              Accept: 'application/json',
+              'Content-type': 'application/json',
+            },
+          };
+          /* Appel de l'API pour post les informations order */
+          fetch('http://localhost:3000/api/products/order', postOptions)
+            .then((res) => {
+              return res.json();
+            })
+            .then((data) => {
+              const orderId = data.orderId;
+              console.log(orderId);
+              /*redirection vers la page confirmation */
+              window.location.href = 'confirmation.html' + '?orderId=' + orderId; 
+            })
+            
+            .catch((error) => {
+              alert(error);
+            });
+          });
+        
+
+        
+        
+      
+    
+  
+ 
   
   
  
