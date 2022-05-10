@@ -1,6 +1,4 @@
 
-
-
 /* recuperation du lien et de l'orderId */
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);

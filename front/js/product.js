@@ -90,9 +90,10 @@ const addProductToStorage = () => {
       console.log(itemQuantity)
       
 
-    const addColorAndQuantity = Object.assign({}, theProduct, {
+    const addColorAndQuantity = Object.assign({}, {
       color : colorSelection,
-      quantity : itemQuantity
+      quantity : itemQuantity,
+      _id : productId
     })
     
     if(productTable == null) {
