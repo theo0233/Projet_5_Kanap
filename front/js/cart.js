@@ -22,6 +22,8 @@ fetch("http://localhost:3000/api/products")
     // on récupèration du panier 
     
     let local = JSON.parse(localStorage.getItem("product"));
+    let qty = 0;
+    let priceTotal = 0;
     // si il y a un panier 
     if (local && local.length != 0) {
       // correspondance clef/valeur api/ panier
@@ -40,13 +42,18 @@ fetch("http://localhost:3000/api/products")
             choix.description = fromApi[g].description;
             choix.alt = fromApi[g].altTxt;
             
-            console.log(choix);
-
+            
+          // calcul prix total
+            priceTotal += fromApi[g].price * choix.quantity;
+            document.getElementById("totalPrice").innerHTML = priceTotal;
           }
-          
+       
+         
+        
         }
-      
+        
       }
+      
       display(local);
       
       
