@@ -74,7 +74,7 @@ const displayProduct = async () => {
     colorSelect.appendChild(tagOption);
 
   });
-addProductToStorage(theProduct);
+addProductToStorage();
 };
 
 displayProduct();

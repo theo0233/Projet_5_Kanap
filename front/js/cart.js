@@ -145,7 +145,7 @@ fetch("http://localhost:3000/api/products")
         );
       } 
       else { 
-        console.log
+        
         comparingProduct = local.filter(element => {
           console.log(element)
           if( productToDelete.dataset.id != element._id || productToDelete.dataset.color != element.color) {
