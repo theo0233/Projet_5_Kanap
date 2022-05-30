@@ -12,7 +12,7 @@ const fetchCanaps = async () => {
 };
 
 
-/* affiche les différents produits dans le DOM */ 
+/* affiche les différents produits dans le DOM */
 const displayCanaps = async () => {
     await fetchCanaps();
     document.getElementById("items").innerHTML = lesCanaps.map((products) => `
@@ -24,39 +24,36 @@ const displayCanaps = async () => {
         </article>
     </a>
     `)
-/* retire la virgule entre chaques produits a l'affichage */
-    .join("");
+        /* retire la virgule entre chaques produits a l'affichage */
+        .join("");
 
-/* ajoute un EventListener "click" sur chaques produits (a), */
+    /* ajoute un EventListener "click" sur chaques produits (a), */
     var buttons = document.querySelectorAll('a');
 
-    for (var i=0; i<buttons.length; ++i) {
-      buttons[i].addEventListener('click', clickFunc);
+    for (var i = 0; i < buttons.length; ++i) {
+        buttons[i].addEventListener('click', clickFunc);
     }
 
-/* recupere l'id du produit cliqué et le passe en parametre au href */
+    /* recupere l'id du produit cliqué et le passe en parametre au href */
     function clickFunc() {
         document.getElementById(this.id).href += `?id=${this.id}`;
-    } 
+    }
 };
 
 displayCanaps();
 
 
-/* notification quantité produit panier */ 
+/* notification quantité produit panier */
 
-let productLocalStorage = JSON.parse(localStorage.getItem("product"))
+let productLocalStorage = JSON.parse(localStorage.getItem(productList))
 let totalProducts = [];
 
 if (productLocalStorage) {
     productLocalStorage.forEach((canap) => {
         totalProducts.push(canap.quantity);
         console.log(totalProducts);
-        
+
     });
     quantityOfProducts.textContent = "(" + `${eval(totalProducts.join("+"))}` + ")";
 
 }
-
-
-
