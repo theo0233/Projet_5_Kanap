@@ -4,24 +4,23 @@ let comparingProduct = [];
 let local = JSON.parse(localStorage.getItem("product"));
 console.log(local);
 
+const getProducts = async function() {
+    let response = await fetch("http://localhost:3000/api/products")
+    let objetProduits = await response.json()
+    console.log(objetProduits)
+    return objetProduits
+
+}
+getProducts()
 
 
-fetch("http://localhost:3000/api/products")
-    .then((res) => res.json())
-    .then((objetProduits) => {
-        console.log(objetProduits);
-        // appel de la fonction dataForDisplay
-        dataForDisplay(objetProduits);
-        recalculatePrice(objetProduits);
-    });
-
-function dataForDisplay(objetProduits) {
+async function dataForDisplay() {
     //  récupèration du panier
-
+    let objetProduits = await getProducts();
     let local = JSON.parse(localStorage.getItem("product"));
-    let qty = 0;
+    console.log(objetProduits)
     let priceTotal = 0;
-    let priceArticle = 0;
+
     // si il y a un panier
     if (local && local.length != 0) {
         // correspondance clef/valeur api/ panier
@@ -54,13 +53,15 @@ function dataForDisplay(objetProduits) {
         document.querySelector("h1").innerHTML =
             "Vous n'avez pas d'article dans votre panier";
     }
+
 }
+dataForDisplay();
 
 function display(data) {
     // on déclare et on pointe la zone d'affichage
     let zonePanier = document.querySelector("#cart__items");
     // on créait les affichages des produits du panier via un map et introduction de dataset dans le code
-    zonePanier.innerHTML += data
+    zonePanier.innerHTML = data
         .map(
             (choix) =>
             `<article class="cart__item" data-id="${choix._id}" data-couleur="${choix.color}" data-quantité="${choix.quantity}"> 
@@ -86,15 +87,16 @@ function display(data) {
     </article>`
         )
         .join("");
-    // reste à l'écoute des modifications de quantité pour l'affichage et actualiser les données
+
     quantityModification();
     deleteProduct();
 
-    // totalPrice();
+
+
 }
 
-const quantityModification = async (display) => {
-    await display;
+function quantityModification() {
+
     document.querySelectorAll("input").forEach((product) => {
         product.addEventListener("change", (e) => {
             let itemToChange = e.target.dataset.id;
@@ -119,11 +121,11 @@ const quantityModification = async (display) => {
     });
 };
 
-const deleteProduct = async (display) => {
-    await display;
+function deleteProduct() {
+
     console.log("testDELETE");
     let supprimer = document.querySelectorAll(".deleteItem");
-
+    let local = JSON.parse(localStorage.getItem("product"));
     console.log(supprimer);
     supprimer.forEach((product) => {
         product.addEventListener("click", () => {
@@ -133,59 +135,61 @@ const deleteProduct = async (display) => {
             console.log(allProductOnStorage);
 
             if (allProductOnStorage == 1) {
-                return localStorage.removeItem("product");
+
+                return localStorage.removeItem("product")
             } else {
-                comparingProduct = local.filter((element) => {
+                let comparingProduct = local.filter((element) => {
                     console.log(element);
                     if (
                         product.dataset.id != element._id ||
                         product.dataset.color != element.color
                     ) {
                         console.log("oOOOOOOOOOO");
-                        return true;
+                        return true
+
                     }
                 });
                 console.log(comparingProduct);
-                localStorage.setItem("product", JSON.stringify(comparingProduct));
+                localStorage.setItem("product", JSON.stringify(comparingProduct))
+
             }
-            recalculatePrice();
-            display();
+            recalculatePrice()
+
+
         });
     });
     return;
 };
 
-function recalculatePrice() {
+const recalculatePrice = async () => {
+
     console.log("recalcul");
+    let objetProduits = await getProducts();
 
-    fetch("http://localhost:3000/api/products/")
-        .then((res) => res.json())
-        .then((promise) => {
-            objetProduits = promise;
-            console.log(objetProduits);
-            let local = JSON.parse(localStorage.getItem("product"));
-            let priceTotal = 0;
-            if (local && local.length != 0) {
-                // correspondance clef/valeur api/ panier
-                for (let choix of local) {
-                    console.log(choix);
+    let priceTotal = 0;
+    if (local && local.length != 0) {
+        // correspondance clef/valeur api/ panier
+        for (let choix of local) {
+            console.log(choix);
 
-                    for (let g = 0, h = objetProduits.length; g < h; g++) {
-                        if (choix._id === objetProduits[g]._id) {
-                            // valeurs pour l'affichage
+            for (let g = 0, h = objetProduits.length; g < h; g++) {
+                if (choix._id === objetProduits[g]._id) {
+                    // valeurs pour l'affichage
 
-                            choix._id = objetProduits[g]._id;
-                            choix.prix = objetProduits[g].price;
+                    choix._id = objetProduits[g]._id;
+                    choix.prix = objetProduits[g].price;
 
-                            // calcul prix total
-                            priceTotal += objetProduits[g].price * choix.quantity;
-                            document.getElementById("totalPrice").innerHTML = priceTotal;
-                        }
-                    }
+                    // calcul prix total
+                    priceTotal += objetProduits[g].price * choix.quantity;
+                    document.getElementById("totalPrice").innerHTML = priceTotal;
                 }
             }
-        });
-}
+        }
+
+    }
+    dataForDisplay()
+};
+
 
 // formulaire regular expression
 function formRecovery() {
