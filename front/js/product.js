@@ -1,7 +1,3 @@
-const test = "test";
-/* recuperation du parametre id dans l'url */
-
-
 function getProductId() {
     return new URL(location.href).searchParams.get("id");
 }
@@ -16,15 +12,17 @@ const fetchProduct = async () => {
         .then((promise) => {
             theProduct = promise;
             console.log(theProduct);
-            console.log(test)
         });
 };
+
+
 
 /* affiche les caracteristiques du produit dans le DOM */
 const displayProduct = async () => {
     await fetchProduct();
     theProduct.colors.forEach(element => console.log(element))
-
+    newPageTitle = theProduct.name;
+    document.title = newPageTitle;
     document.getElementById("item_card").innerHTML = `
     <article>
              <div class="item__img">

@@ -4,16 +4,16 @@ let comparingProduct = [];
 let local = JSON.parse(localStorage.getItem("product"));
 console.log(local);
 
+// fonction de recuperation des produits de l'API
 const getProducts = async function() {
     let response = await fetch("http://localhost:3000/api/products")
     let objetProduits = await response.json()
     console.log(objetProduits)
     return objetProduits
-
 }
 getProducts()
 
-
+// fonction qui prépare les données pour l'affichage 
 async function dataForDisplay() {
     //  récupèration du panier
     let objetProduits = await getProducts();
@@ -25,7 +25,7 @@ async function dataForDisplay() {
     if (local && local.length != 0) {
         // correspondance clef/valeur api/ panier
         for (let choix of local) {
-            console.log(choix);
+
 
             for (let g = 0, h = objetProduits.length; g < h; g++) {
                 if (choix._id === objetProduits[g]._id) {
@@ -43,6 +43,7 @@ async function dataForDisplay() {
                     document.getElementById("totalPrice").innerHTML = priceTotal;
 
                 }
+
             }
         }
 
@@ -50,8 +51,9 @@ async function dataForDisplay() {
     } else {
         // si pas de panier
 
-        document.querySelector("h1").innerHTML =
+        document.querySelector("#cart__items").innerHTML =
             "Vous n'avez pas d'article dans votre panier";
+        document.getElementById("totalPrice").innerHTML = priceTotal;
     }
 
 }
@@ -105,14 +107,13 @@ function quantityModification() {
             console.log(itemToChange);
             console.log(newQuantity);
             console.log(colorSelection);
-            for (i = 0; i < local.length; i++) {
-                if (local[i]._id == itemToChange && local[i].color == colorSelection) {
+            for (let i = 0; i < local.length; i++) {
+                if (local[i]._id === itemToChange && local[i].color === colorSelection) {
                     console.log("maj quantite");
-                    return (
-                        (local[i].quantity = newQuantity),
+                    local = JSON.parse(localStorage["product"]);
+                    local[i].quantity = newQuantity,
                         localStorage.setItem("product", JSON.stringify(local)),
-                        recalculatePrice()
-                    );
+                        recalculatePrice();
                 }
             }
 
@@ -129,14 +130,14 @@ function deleteProduct() {
     console.log(supprimer);
     supprimer.forEach((product) => {
         product.addEventListener("click", () => {
-            console.log(product);
+            console.log("bouton supprimer du produit correspondant", product);
 
             let allProductOnStorage = local.length;
-            console.log(allProductOnStorage);
+            console.log("nombre total de produit dans le local storage", allProductOnStorage);
 
             if (allProductOnStorage == 1) {
+                localStorage.removeItem("product")
 
-                return localStorage.removeItem("product")
             } else {
                 let comparingProduct = local.filter((element) => {
                     console.log(element);
@@ -144,13 +145,16 @@ function deleteProduct() {
                         product.dataset.id != element._id ||
                         product.dataset.color != element.color
                     ) {
-                        console.log("oOOOOOOOOOO");
+                        dataForDisplay()
                         return true
 
                     }
                 });
-                console.log(comparingProduct);
+                console.log("produit restant ", comparingProduct);
+                console.log("avant rajout", local)
                 localStorage.setItem("product", JSON.stringify(comparingProduct))
+                console.log("apres rajout", local)
+
 
             }
             recalculatePrice()
@@ -169,7 +173,7 @@ const recalculatePrice = async () => {
     let priceTotal = 0;
     if (local && local.length != 0) {
         // correspondance clef/valeur api/ panier
-        for (let choix of local) {
+        for (choix of local) {
             console.log(choix);
 
             for (let g = 0, h = objetProduits.length; g < h; g++) {

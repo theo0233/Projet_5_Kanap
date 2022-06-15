@@ -33,27 +33,11 @@ const displayCanaps = async () => {
     for (var i = 0; i < buttons.length; ++i) {
         buttons[i].addEventListener('click', clickFunc);
     }
-
-    /* recupere l'id du produit cliqué et le passe en parametre au href */
-    function clickFunc() {
-        document.getElementById(this.id).href += `?id=${this.id}`;
-    }
 };
 
 displayCanaps();
 
-
-/* notification quantité produit panier */
-
-let productLocalStorage = JSON.parse(localStorage.getItem(productList))
-let totalProducts = [];
-
-if (productLocalStorage) {
-    productLocalStorage.forEach((canap) => {
-        totalProducts.push(canap.quantity);
-        console.log(totalProducts);
-
-    });
-    quantityOfProducts.textContent = "(" + `${eval(totalProducts.join("+"))}` + ")";
-
+function clickFunc() {
+    /* recupere l'id du produit cliqué et le passe en parametre au href */
+    document.getElementById(this.id).href += `?id=${this.id}`;
 }
