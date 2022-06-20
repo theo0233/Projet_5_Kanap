@@ -50,7 +50,7 @@ const displayProduct = async () => {
 
                 <div class="item__content__settings__quantity">
                   <label for="itemQuantity">Nombre d'article(s) (1-100) :</label>
-                  <input type="number" name="itemQuantity" min="1" max="100" value="0" id="quantity">
+                  <input type="number" name="itemQuantity" min="1" max="100" value="1" id="quantity">
                 </div>
               </div>
 
@@ -111,7 +111,7 @@ const addProductToStorage = () => {
                 if (productTable[i]._id == theProduct._id && productTable[i].color == colorSelection) {
                     console.log("meme produit,meme couleur")
                     return (
-                        productTable[i].quantity += itemQuantity,
+                        productTable[i].quantity = itemQuantity,
                         localStorage.setItem("product", JSON.stringify(productTable)),
                         productTable = JSON.parse(localStorage.getItem("product"))
                     );
